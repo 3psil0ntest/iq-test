@@ -71,46 +71,22 @@
   </div>
 
   <script>
-    const questions = [
-      { question: "What is the synonym of 'ephemeral'?", choices: ["Temporary", "Permanent", "Lasting", "Immortal"], answer: 0, difficulty: 1 },
-      { question: "What is the next number in the sequence: 2, 6, 12, 20, 30, ___?", choices: ["42", "40", "36", "32"], answer: 0, difficulty: 1 },
-      { question: "Which number is the odd one out? 7, 11, 15, 19", choices: ["7", "11", "15", "19"], answer: 2, difficulty: 2 },
-      { question: "How many corners does a cube have?", choices: ["4", "6", "8", "12"], answer: 2, difficulty: 1 },
-      { question: "Which letter comes next: A, C, F, J, O, ___?", choices: ["Q", "R", "S", "T"], answer: 1, difficulty: 2 },
-      { question: "Solve: 5/2 * x - 7 = 13", choices: ["4", "8", "10", "20"], answer: 1, difficulty: 2 },
-      { question: "Odd one out: Shakespeare, Dickens, Wilde, Newton", choices: ["Shakespeare", "Dickens", "Wilde", "Newton"], answer: 3, difficulty: 2 },
-      { question: "Next square number: 1, 4, 9, 16, 25, ___?", choices: ["30", "32", "36", "40"], answer: 2, difficulty: 1 },
-      { question: "Next in pattern: 2, 3, 5, 8, 12, ___?", choices: ["15", "17", "18", "20"], answer: 1, difficulty: 2 },
-      { question: "Which doesn't belong? Circle, Square, Triangle, Sphere", choices: ["Circle", "Square", "Triangle", "Sphere"], answer: 3, difficulty: 1 },
-      { question: "Train travels 60 miles in 1.5 hours. Speed?", choices: ["40", "45", "50", "55"], answer: 0, difficulty: 2 },
-      { question: "Next in sequence: 3, 9, 27, 81, ___?", choices: ["100", "162", "243", "256"], answer: 2, difficulty: 1 },
-      { question: "Missing number: 3, 6, 11, 18, 27, ___?", choices: ["36", "37", "38", "40"], answer: 2, difficulty: 2 },
-      { question: "Opposite of 'benevolent'?", choices: ["Kind", "Malevolent", "Generous", "Caring"], answer: 1, difficulty: 1 },
-      { question: "Car drives 200 miles on 10 gallons. MPG?", choices: ["15", "20", "25", "30"], answer: 2, difficulty: 1 },
-      { question: "All roses are flowers. Some flowers fade quickly. Can we deduce some roses fade quickly?", choices: ["Yes", "No", "Not enough info", "Maybe"], answer: 2, difficulty: 3 },
-      { question: "Next number: 1, 4, 10, 20, 35, ___?", choices: ["51", "52", "53", "54"], answer: 0, difficulty: 2 },
-      { question: "Opposite of 'optimistic'?", choices: ["Pessimistic", "Hopeful", "Positive", "Upbeat"], answer: 0, difficulty: 1 },
-      { question: "If A = 1, B = 2, ..., what is the value of 'DOG'?", choices: ["26", "30", "34", "36"], answer: 2, difficulty: 3 },
-      { question: "Which conclusion is most logical? All men are mortal. Socrates is a man.", choices: ["Socrates is mortal", "Socrates is a god", "Socrates is not mortal", "No conclusion"], answer: 0, difficulty: 2 }
-    ];
-
-    document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("DOMContentLoaded", function () {
       const startBtn = document.getElementById("start-btn");
       const submitBtn = document.getElementById("submit-btn");
 
-      startBtn.addEventListener("click", () => {
+      startBtn.addEventListener("click", function () {
         const dob = document.getElementById("dob").value;
         if (!dob) {
           alert("Please enter your date of birth.");
           return;
         }
-
         document.getElementById("welcome-page").style.display = "none";
         document.getElementById("test-page").style.display = "block";
         loadQuestions();
       });
 
-      submitBtn.addEventListener("click", () => {
+      submitBtn.addEventListener("click", function () {
         let totalScore = 0;
 
         questions.forEach((q, index) => {
@@ -127,13 +103,30 @@
       });
     });
 
+    const questions = [
+      { question: "Synonym of 'ephemeral'?", choices: ["Temporary", "Permanent", "Lasting", "Immortal"], answer: 0, difficulty: 1 },
+      { question: "Next in sequence: 2, 6, 12, 20, 30, ___?", choices: ["42", "40", "36", "32"], answer: 0, difficulty: 1 },
+      { question: "Odd one out? 7, 11, 15, 19", choices: ["7", "11", "15", "19"], answer: 2, difficulty: 2 },
+      { question: "How many corners does a cube have?", choices: ["4", "6", "8", "12"], answer: 2, difficulty: 1 },
+      { question: "Which letter comes next: A, C, F, J, O, ___?", choices: ["Q", "R", "S", "T"], answer: 1, difficulty: 2 },
+      { question: "Solve: 5/2 * x - 7 = 13", choices: ["4", "8", "10", "20"], answer: 1, difficulty: 2 },
+      { question: "Odd one out: Shakespeare, Dickens, Wilde, Newton", choices: ["Shakespeare", "Dickens", "Wilde", "Newton"], answer: 3, difficulty: 2 },
+      { question: "Next square number: 1, 4, 9, 16, 25, ___?", choices: ["30", "32", "36", "40"], answer: 2, difficulty: 1 },
+      { question: "Next in pattern: 2, 3, 5, 8, 12, ___?", choices: ["15", "17", "18", "20"], answer: 1, difficulty: 2 },
+      { question: "Which doesn't belong? Circle, Square, Triangle, Sphere", choices: ["Circle", "Square", "Triangle", "Sphere"], answer: 3, difficulty: 1 },
+      { question: "Train travels 60 miles in 1.5 hours. Speed?", choices: ["40", "45", "50", "55"], answer: 0, difficulty: 2 },
+      { question: "Next in sequence: 3, 9, 27, 81, ___?", choices: ["100", "162", "243", "256"], answer: 2, difficulty: 1 },
+      { question: "Missing number: 3, 6, 11, 18, 27, ___?", choices: ["36", "37", "38", "40"], answer: 2, difficulty: 2 },
+      { question: "Opposite of 'benevolent'?", choices: ["Kind", "Malevolent", "Generous", "Caring"], answer: 1, difficulty: 1 },
+      { question: "Car drives 200 miles on 10 gallons. MPG?", choices: ["15", "20", "25", "30"], answer: 2, difficulty: 1 },
+      { question: "All roses are flowers. Some flowers fade quickly. Can we deduce some roses fade quickly?", choices: ["Yes", "No", "Not enough info", "Maybe"], answer: 2, difficulty: 3 },
+      { question: "Next number: 1, 4, 10, 20, 35, ___?", choices: ["51", "52", "53", "54"], answer: 0, difficulty: 2 },
+      { question: "Opposite of 'optimistic'?", choices: ["Pessimistic", "Hopeful", "Positive", "Upbeat"], answer: 0, difficulty: 1 },
+      { question: "If A = 1, B = 2, ..., what is the value of 'DOG'?", choices: ["26", "30", "34", "36"], answer: 2, difficulty: 3 },
+      { question: "All men are mortal. Socrates is a man. What follows?", choices: ["Socrates is mortal", "Socrates is a god", "Socrates is not mortal", "No conclusion"], answer: 0, difficulty: 2 }
+    ];
+
     function loadQuestions() {
       const form = document.getElementById("test-form");
       form.innerHTML = "";
 
-      questions.forEach((q, index) => {
-        const div = document.createElement("div");
-        div.className = "question";
-        div.innerHTML = `<p>${index + 1}. ${q.question}</p>`;
-        q.choices.forEach((choice, i) => {
-          div.innerHTML +=
