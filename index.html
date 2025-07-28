@@ -2,31 +2,41 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>IQ Test</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      color: #333;
-      padding: 20px;
+      background-color: #f5f7fa;
+      margin: 0;
+      padding: 0;
+      text-align: center;
     }
     .container {
       max-width: 800px;
-      background: white;
+      margin: 50px auto;
       padding: 20px;
-      margin: auto;
-      border-radius: 8px;
+      background: white;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 10px;
     }
-    h1, h2 {
-      text-align: center;
+    #welcome {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    #welcome-text {
+      width: 60%;
+    }
+    #stickman {
+      width: 150px;
+      height: 200px;
     }
     .question {
-      margin-bottom: 20px;
+      margin: 20px 0;
     }
-    label {
-      display: block;
-      margin: 5px 0;
+    .answers {
+      margin-top: 10px;
     }
     button {
       padding: 10px 20px;
@@ -34,94 +44,162 @@
       margin-top: 20px;
       cursor: pointer;
     }
-    #test-page, #result-page {
-      display: none;
+    input[type="date"] {
+      padding: 5px;
     }
   </style>
 </head>
 <body>
-  <div class="container" id="welcome-page">
-    <h1>Welcome to the IQ Test</h1>
-    <p>Please enter your date of birth to begin:</p>
-    <input type="date" id="dob">
-    <button onclick="startTest()">Start Test</button>
-  </div>
-
-  <div class="container" id="test-page">
-    <h2>IQ Test</h2>
-    <form id="test-form"></form>
-    <button onclick="submitTest()">Submit</button>
-  </div>
-
-  <div class="container" id="result-page">
-    <h2>Your Estimated IQ</h2>
-    <p id="iq-score"></p>
-    <button onclick="location.reload()">Retake Test</button>
+  <div class="container" id="app">
+    <div id="welcome">
+      <div id="welcome-text">
+        <h1>Welcome to the IQ Test</h1>
+        <p>Find out your IQ now</p>
+        <p>Enter your date of birth:</p>
+        <input type="date" id="dob" required />
+        <br/><br/>
+        <button onclick="startTest()">Start Test</button>
+      </div>
+      <div id="stickman">
+        <svg width="120" height="200" xmlns="http://www.w3.org/2000/svg">
+          <!-- Lightbulb -->
+          <circle cx="60" cy="20" r="10" fill="yellow"/>
+          <line x1="60" y1="30" x2="60" y2="45" stroke="black" stroke-width="2"/>
+          <!-- Head -->
+          <circle cx="60" cy="60" r="20" stroke="black" stroke-width="2" fill="none"/>
+          <circle cx="54" cy="55" r="2" fill="black"/>
+          <circle cx="66" cy="55" r="2" fill="black"/>
+          <path d="M52 65 Q60 75 68 65" stroke="black" fill="none"/>
+          <!-- Body -->
+          <line x1="60" y1="80" x2="60" y2="130" stroke="black" stroke-width="2"/>
+          <!-- Arms -->
+          <line x1="60" y1="90" x2="40" y2="110" stroke="black" stroke-width="2"/>
+          <line x1="60" y1="90" x2="80" y2="110" stroke="black" stroke-width="2"/>
+          <!-- Legs -->
+          <line x1="60" y1="130" x2="45" y2="160" stroke="black" stroke-width="2"/>
+          <line x1="60" y1="130" x2="75" y2="160" stroke="black" stroke-width="2"/>
+        </svg>
+      </div>
+    </div>
   </div>
 
   <script>
     const questions = [
-      { q: "What is 5 + 7?", a: ["10", "11", "12", "13"], c: 2 },
-      { q: "Which word is the synonym of 'obscure'?", a: ["Clear", "Vague", "Obvious", "Bright"], c: 1 },
-      { q: "What comes next: 1, 4, 9, 16, ___?", a: ["20", "25", "22", "23"], c: 1 },
-      { q: "What is the capital of Germany?", a: ["Berlin", "Paris", "Vienna", "Rome"], c: 0 },
-      { q: "Choose the odd one out: Apple, Banana, Carrot, Mango", a: ["Apple", "Banana", "Carrot", "Mango"], c: 2 },
-      { q: "If A=1, B=2, ..., Z=26, what is the value of 'DOG'?", a: ["26", "34", "39", "42"], c: 2 },
-      { q: "What is the next number: 2, 6, 12, 20, ___?", a: ["28", "30", "32", "34"], c: 1 },
-      { q: "Synonym of 'benevolent'?", a: ["Cruel", "Kind", "Lazy", "Arrogant"], c: 1 },
-      { q: "Solve: (8 × 3) + (4 ÷ 2)", a: ["26", "28", "24", "20"], c: 0 },
-      { q: "What shape has 5 sides?", a: ["Square", "Triangle", "Pentagon", "Hexagon"], c: 2 },
-      { q: "Which is a palindrome?", a: ["Racecar", "Horse", "Book", "Mountain"], c: 0 },
-      { q: "Find the missing letter: A, C, E, G, ___", a: ["I", "H", "J", "K"], c: 0 },
-      { q: "What comes next: J, F, M, A, M, ___?", a: ["J", "N", "O", "J"], c: 0 },
-      { q: "Which number is the smallest prime?", a: ["0", "1", "2", "3"], c: 2 },
-      { q: "Antonym of 'expand'?", a: ["Extend", "Grow", "Shrink", "Enlarge"], c: 2 },
-      { q: "Which does not belong? Piano, Guitar, Violin, Apple", a: ["Piano", "Guitar", "Violin", "Apple"], c: 3 },
-      { q: "What is 3^3?", a: ["6", "9", "27", "81"], c: 2 },
-      { q: "Which pattern continues: 1, 2, 4, 8, ___?", a: ["10", "12", "14", "16"], c: 3 },
-      { q: "Which is not a mammal? Dog, Whale, Crocodile, Bat", a: ["Dog", "Whale", "Crocodile", "Bat"], c: 2 },
-      { q: "What is the square root of 144?", a: ["10", "11", "12", "13"], c: 2 }
+      {
+        q: "What comes next in the sequence: 2, 4, 8, 16, ?",
+        a: ["18", "24", "32", "30"],
+        correct: 2
+      },
+      {
+        q: "If ALL SQUERPS are FLOBBLES, and ALL FLOBBLES are DINKS, are all SQUERPS definitely DINKS?",
+        a: ["Yes", "No", "Cannot Say", "Only some"],
+        correct: 0
+      },
+      {
+        q: "Which word is the odd one out: Apple, Banana, Carrot, Grape?",
+        a: ["Apple", "Banana", "Carrot", "Grape"],
+        correct: 2
+      },
+      {
+        q: "What is 15% of 160?",
+        a: ["20", "24", "26", "28"],
+        correct: 1
+      },
+      {
+        q: "Rearrange: 'RTAEHC' to form a word related to school.",
+        a: ["REACHT", "TEACHR", "CHART", "TEACHER"],
+        correct: 3
+      },
+      {
+        q: "Which number is missing: 3, 6, 11, 18, ?, 38",
+        a: ["27", "24", "29", "30"],
+        correct: 1
+      },
+      {
+        q: "What does the analogy mean? Cat is to Kitten as Dog is to...?",
+        a: ["Cub", "Calf", "Puppy", "Foal"],
+        correct: 2
+      },
+      {
+        q: "Which shape has the most sides?",
+        a: ["Triangle", "Pentagon", "Octagon", "Hexagon"],
+        correct: 2
+      },
+      {
+        q: "Which number is the square of 13?",
+        a: ["156", "169", "144", "181"],
+        correct: 1
+      },
+      {
+        q: "What is the next number in this series: 1, 1, 2, 3, 5, 8, ?",
+        a: ["11", "12", "13", "15"],
+        correct: 2
+      },
+      // Harder questions start here
+      {
+        q: "What is the 8th prime number?",
+        a: ["17", "19", "23", "29"],
+        correct: 2
+      },
+      {
+        q: "Which figure does not belong in the set: Cube, Sphere, Cylinder, Pyramid?",
+        a: ["Cube", "Sphere", "Cylinder", "Pyramid"],
+        correct: 1
+      },
+      {
+        q: "A train travels 60 miles at 30 mph and returns at 60 mph. What is the average speed?",
+        a: ["40 mph", "45 mph", "50 mph", "60 mph"],
+        correct: 1
+      },
+      {
+        q: "Find the missing letter: A, C, F, J, O, ?",
+        a: ["Q", "S", "U", "V"],
+        correct: 2
+      },
+      {
+        q: "What is 111 in binary?",
+        a: ["1101111", "1001111", "110111", "1111111"],
+        correct: 0
+      },
+      {
+        q: "If a cube's surface area is 150 cm², what is the length of one side?",
+        a: ["5", "6", "√25", "√150/6"],
+        correct: 1
+      },
+      {
+        q: "Which number completes the pattern? 2, 12, 30, 56, ?, 132",
+        a: ["82", "90", "86", "100"],
+        correct: 2
+      },
+      {
+        q: "Solve: (7 + 3)² ÷ 2 + 1",
+        a: ["26", "51", "60", "100"],
+        correct: 0
+      },
+      {
+        q: "Which 3D shape has all edges equal and angles at 90°?",
+        a: ["Sphere", "Tetrahedron", "Cube", "Cylinder"],
+        correct: 2
+      },
+      {
+        q: "What's the next number: 2, 12, 36, 80, 150, ?",
+        a: ["246", "270", "252", "262"],
+        correct: 3
+      }
     ];
 
+    let current = 0;
+    let score = 0;
+    let birthDate;
+
     function startTest() {
-      const dob = document.getElementById('dob').value;
-      if (!dob) {
+      birthDate = document.getElementById('dob').value;
+      if (!birthDate) {
         alert("Please enter your date of birth.");
         return;
       }
-      document.getElementById('welcome-page').style.display = "none";
-      document.getElementById('test-page').style.display = "block";
-
-      const form = document.getElementById('test-form');
-      questions.forEach((item, index) => {
-        const div = document.createElement('div');
-        div.className = 'question';
-        div.innerHTML = `<p><strong>Q${index + 1}:</strong> ${item.q}</p>`;
-        item.a.forEach((choice, i) => {
-          div.innerHTML += `
-            <label>
-              <input type="radio" name="q${index}" value="${i}">
-              ${choice}
-            </label>
-          `;
-        });
-        form.appendChild(div);
-      });
+      document.getElementById('app').innerHTML = '';
+      showQuestion();
     }
 
-    function submitTest() {
-      let score = 0;
-      questions.forEach((q, i) => {
-        const selected = document.querySelector(`input[name="q${i}"]:checked`);
-        if (selected && parseInt(selected.value) === q.c) {
-          score++;
-        }
-      });
-      const estimatedIQ = Math.round(80 + (score / questions.length) * 60); // Range: 80–140
-      document.getElementById('test-page').style.display = "none";
-      document.getElementById('result-page').style.display = "block";
-      document.getElementById('iq-score').textContent = `Your estimated IQ is: ${estimatedIQ}`;
-    }
-  </script>
-</body>
-</html>
+    function showQuestion() {
