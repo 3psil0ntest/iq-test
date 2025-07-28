@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>IQ Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      color: #333;
+      padding: 20px;
+    }
+    .container {
+      max-width: 800px;
+      background: white;
+      padding: 20px;
+      margin: auto;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin: 5px 0;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-top: 20px;
+      cursor: pointer;
+    }
+    #test-page, #result-page {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="welcome-page">
+    <h1>Welcome to the IQ Test</h1>
+    <p>Please enter your date of birth to begin:</p>
+    <input type="date" id="dob">
+    <button onclick="startTest()">Start Test</button>
+  </div>
+
+  <div class="container" id="test-page">
+    <h2>IQ Test</h2>
+    <form id="test-form"></form>
+    <button onclick="submitTest()">Submit</button>
+  </div>
+
+  <div class="container" id="result-page">
+    <h2>Your Estimated IQ</h2>
+    <p id="iq-score"></p>
+    <button onclick="location.reload()">Retake Test</button>
+  </div>
+
+  <script>
+    const questions = [
+      { q: "What is 5 + 7?", a: ["10", "11", "12", "13"], c: 2 },
+      { q: "Which word is the synonym of 'obscure'?", a: ["Clear", "Vague", "Obvious", "Bright"], c: 1 },
+      { q: "What comes next: 1, 4, 9, 16, ___?", a: ["20", "25", "22", "23"], c: 1 },
+      { q: "What is the capital of Germany?", a: ["Berlin", "Paris", "Vienna", "Rome"], c: 0 },
+      { q: "Choose the odd one out: Apple, Banana, Carrot, Mango", a: ["Apple", "Banana", "Carrot", "Mango"], c: 2 },
+      { q: "If A=1, B=2, ..., Z=26, what is the value of 'DOG'?", a: ["26", "34", "39", "42"], c: 2 },
+      { q: "What is the next number: 2, 6, 12, 20, ___?", a: ["28", "30", "32", "34"], c: 1 },
+      { q: "Synonym of 'benevolent'?", a: ["Cruel", "Kind", "Lazy", "Arrogant"], c: 1 },
+      { q: "Solve: (8 × 3) + (4 ÷ 2)", a: ["26", "28", "24", "20"], c: 0 },
+      { q: "What shape has 5 sides?", a: ["Square", "Triangle", "Pentagon", "Hexagon"], c: 2 },
+      { q: "Which is a palindrome?", a: ["Racecar", "Horse", "Book", "Mountain"], c: 0 },
+      { q: "Find the missing letter: A, C, E, G, ___", a: ["I", "H", "J", "K"], c: 0 },
+      { q: "What comes next: J, F, M, A, M, ___?", a: ["J", "N", "O", "J"], c: 0 },
+      { q: "Which number is the smallest prime?", a: ["0", "1", "2", "3"], c: 2 },
+      { q: "Antonym of 'expand'?", a: ["Extend", "Grow", "Shrink", "Enlarge"], c: 2 },
+      { q: "Which does not belong? Piano, Guitar, Violin, Apple", a: ["Piano", "Guitar", "Violin", "Apple"], c: 3 },
+      { q: "What is 3^3?", a: ["6", "9", "27", "81"], c: 2 },
+      { q: "Which pattern continues: 1, 2, 4, 8, ___?", a: ["10", "12", "14", "16"], c: 3 },
+      { q: "Which is not a mammal? Dog, Whale, Crocodile, Bat", a: ["Dog", "Whale", "Crocodile", "Bat"], c: 2 },
+      { q: "What is the square root of 144?", a: ["10", "11", "12", "13"], c: 2 }
+    ];
+
+    function startTest() {
+      const dob = document.getElementById('dob').value;
+      if (!dob) {
+        alert("Please enter your date of birth.");
+        return;
+      }
+      document.getElementById('welcome-page').style.display = "none";
+      document.getElementById('test-page').style.display = "block";
+
+      const form = document.getElementById('test-form');
+      questions.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'question';
+        div.innerHTML = `<p><strong>Q${index + 1}:</strong> ${item.q}</p>`;
+        item.a.forEach((choice, i) => {
+          div.innerHTML += `
+            <label>
+              <input type="radio" name="q${index}" value="${i}">
+              ${choice}
+            </label>
+          `;
+        });
+        form.appendChild(div);
+      });
+    }
+
+    function submitTest() {
+      let score = 0;
+      questions.forEach((q, i) => {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        if (selected && parseInt(selected.value) === q.c) {
+          score++;
+        }
+      });
+      const estimatedIQ = Math.round(80 + (score / questions.length) * 60); // Range: 80–140
+      document.getElementById('test-page').style.display = "none";
+      document.getElementById('result-page').style.display = "block";
+      document.getElementById('iq-score').textContent = `Your estimated IQ is: ${estimatedIQ}`;
+    }
+  </script>
+</body>
+</html>
