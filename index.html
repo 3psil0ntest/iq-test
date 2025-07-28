@@ -1,31 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>IQ Test</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="container" id="welcome-page">
-        <h1>Welcome to the IQ Test</h1>
-        <p>Please enter your date of birth to begin:</p>
-        <input type="date" id="dob" required>
-        <button id="start-btn">Start Test</button>
-    </div>
-
-    <div class="container" id="test-page" style="display: none;">
-        <h1>IQ Test</h1>
-        <form id="test-form"></form>
-        <button id="submit-btn">Submit</button>
-    </div>
-
-    <div class="container" id="result-page" style="display: none;">
-        <h1>Your IQ Result</h1>
-        <p id="iq-score"></p>
-        <button onclick="window.location.reload()">Take the Test Again</button>
-    </div>
-
-    <script src="script.js"></script>
-</body>
-</html>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>IQ Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      padding: 20px;
+      color: #333;
+    }
+    .container {
+      background: #fff;
+      max-width: 600px;
+      margin: 30px auto;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
