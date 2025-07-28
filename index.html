@@ -35,8 +35,10 @@
     .question {
       margin: 20px 0;
     }
-    .answers {
-      margin-top: 10px;
+    .answers button {
+      display: block;
+      margin: 10px auto;
+      padding: 10px 20px;
     }
     button {
       padding: 10px 20px;
@@ -58,7 +60,7 @@
         <p>Enter your date of birth:</p>
         <input type="date" id="dob" required />
         <br/><br/>
-        <button onclick="startTest()">Start Test</button>
+        <button id="startBtn">Start Test</button>
       </div>
       <div id="stickman">
         <svg width="120" height="200" xmlns="http://www.w3.org/2000/svg">
@@ -84,122 +86,71 @@
   </div>
 
   <script>
+    const app = document.getElementById('app');
+    const startBtn = document.getElementById('startBtn');
+    let currentQuestion = 0;
+    let score = 0;
+    let birthYear = 2000;
+
     const questions = [
-      {
-        q: "What comes next in the sequence: 2, 4, 8, 16, ?",
-        a: ["18", "24", "32", "30"],
-        correct: 2
-      },
-      {
-        q: "If ALL SQUERPS are FLOBBLES, and ALL FLOBBLES are DINKS, are all SQUERPS definitely DINKS?",
-        a: ["Yes", "No", "Cannot Say", "Only some"],
-        correct: 0
-      },
-      {
-        q: "Which word is the odd one out: Apple, Banana, Carrot, Grape?",
-        a: ["Apple", "Banana", "Carrot", "Grape"],
-        correct: 2
-      },
-      {
-        q: "What is 15% of 160?",
-        a: ["20", "24", "26", "28"],
-        correct: 1
-      },
-      {
-        q: "Rearrange: 'RTAEHC' to form a word related to school.",
-        a: ["REACHT", "TEACHR", "CHART", "TEACHER"],
-        correct: 3
-      },
-      {
-        q: "Which number is missing: 3, 6, 11, 18, ?, 38",
-        a: ["27", "24", "29", "30"],
-        correct: 1
-      },
-      {
-        q: "What does the analogy mean? Cat is to Kitten as Dog is to...?",
-        a: ["Cub", "Calf", "Puppy", "Foal"],
-        correct: 2
-      },
-      {
-        q: "Which shape has the most sides?",
-        a: ["Triangle", "Pentagon", "Octagon", "Hexagon"],
-        correct: 2
-      },
-      {
-        q: "Which number is the square of 13?",
-        a: ["156", "169", "144", "181"],
-        correct: 1
-      },
-      {
-        q: "What is the next number in this series: 1, 1, 2, 3, 5, 8, ?",
-        a: ["11", "12", "13", "15"],
-        correct: 2
-      },
-      // Harder questions start here
-      {
-        q: "What is the 8th prime number?",
-        a: ["17", "19", "23", "29"],
-        correct: 2
-      },
-      {
-        q: "Which figure does not belong in the set: Cube, Sphere, Cylinder, Pyramid?",
-        a: ["Cube", "Sphere", "Cylinder", "Pyramid"],
-        correct: 1
-      },
-      {
-        q: "A train travels 60 miles at 30 mph and returns at 60 mph. What is the average speed?",
-        a: ["40 mph", "45 mph", "50 mph", "60 mph"],
-        correct: 1
-      },
-      {
-        q: "Find the missing letter: A, C, F, J, O, ?",
-        a: ["Q", "S", "U", "V"],
-        correct: 2
-      },
-      {
-        q: "What is 111 in binary?",
-        a: ["1101111", "1001111", "110111", "1111111"],
-        correct: 0
-      },
-      {
-        q: "If a cube's surface area is 150 cm², what is the length of one side?",
-        a: ["5", "6", "√25", "√150/6"],
-        correct: 1
-      },
-      {
-        q: "Which number completes the pattern? 2, 12, 30, 56, ?, 132",
-        a: ["82", "90", "86", "100"],
-        correct: 2
-      },
-      {
-        q: "Solve: (7 + 3)² ÷ 2 + 1",
-        a: ["26", "51", "60", "100"],
-        correct: 0
-      },
-      {
-        q: "Which 3D shape has all edges equal and angles at 90°?",
-        a: ["Sphere", "Tetrahedron", "Cube", "Cylinder"],
-        correct: 2
-      },
-      {
-        q: "What's the next number: 2, 12, 36, 80, 150, ?",
-        a: ["246", "270", "252", "262"],
-        correct: 3
-      }
+      // 20 questions (same structure as before)
+      { q: "What comes next in the sequence: 2, 4, 8, 16, ?", a: ["18", "24", "32", "30"], correct: 2 },
+      { q: "If ALL SQUERPS are FLOBBLES, and ALL FLOBBLES are DINKS, are all SQUERPS definitely DINKS?", a: ["Yes", "No", "Cannot Say", "Only some"], correct: 0 },
+      { q: "Which word is the odd one out: Apple, Banana, Carrot, Grape?", a: ["Apple", "Banana", "Carrot", "Grape"], correct: 2 },
+      { q: "What is 15% of 160?", a: ["20", "24", "26", "28"], correct: 1 },
+      { q: "Rearrange: 'RTAEHC' to form a word related to school.", a: ["REACHT", "TEACHR", "CHART", "TEACHER"], correct: 3 },
+      { q: "Which number is missing: 3, 6, 11, 18, ?, 38", a: ["27", "24", "29", "30"], correct: 1 },
+      { q: "What does the analogy mean? Cat is to Kitten as Dog is to...?", a: ["Cub", "Calf", "Puppy", "Foal"], correct: 2 },
+      { q: "Which shape has the most sides?", a: ["Triangle", "Pentagon", "Octagon", "Hexagon"], correct: 2 },
+      { q: "Which number is the square of 13?", a: ["156", "169", "144", "181"], correct: 1 },
+      { q: "What is the next number in this series: 1, 1, 2, 3, 5, 8, ?", a: ["11", "12", "13", "15"], correct: 2 },
+      // Harder
+      { q: "What is the 8th prime number?", a: ["17", "19", "23", "29"], correct: 2 },
+      { q: "Which figure does not belong: Cube, Sphere, Cylinder, Pyramid?", a: ["Cube", "Sphere", "Cylinder", "Pyramid"], correct: 1 },
+      { q: "Train travels 60 miles at 30 mph and returns at 60 mph. Avg speed?", a: ["40 mph", "45 mph", "50 mph", "60 mph"], correct: 1 },
+      { q: "Find the missing letter: A, C, F, J, O, ?", a: ["Q", "S", "U", "V"], correct: 2 },
+      { q: "What is 111 in binary?", a: ["1101111", "1001111", "110111", "1111111"], correct: 0 },
+      { q: "Cube surface area is 150 cm². Side length?", a: ["5", "6", "√25", "√150/6"], correct: 1 },
+      { q: "Complete the pattern: 2, 12, 30, 56, ?, 132", a: ["82", "90", "86", "100"], correct: 2 },
+      { q: "Solve: (7 + 3)² ÷ 2 + 1", a: ["26", "51", "60", "100"], correct: 0 },
+      { q: "Which 3D shape has equal edges and 90° angles?", a: ["Sphere", "Tetrahedron", "Cube", "Cylinder"], correct: 2 },
+      { q: "Next number: 2, 12, 36, 80, 150, ?", a: ["246", "270", "252", "262"], correct: 3 }
     ];
 
-    let current = 0;
-    let score = 0;
-    let birthDate;
-
-    function startTest() {
-      birthDate = document.getElementById('dob').value;
-      if (!birthDate) {
+    startBtn.addEventListener('click', () => {
+      const dob = document.getElementById('dob').value;
+      if (!dob) {
         alert("Please enter your date of birth.");
         return;
       }
-      document.getElementById('app').innerHTML = '';
+      birthYear = new Date(dob).getFullYear();
+      app.innerHTML = '';
+      showQuestion();
+    });
+
+    function showQuestion() {
+      if (currentQuestion >= questions.length) {
+        showResults();
+        return;
+      }
+
+      const q = questions[currentQuestion];
+      app.innerHTML = `
+        <div class="container">
+          <h2>Question ${currentQuestion + 1} of ${questions.length}</h2>
+          <p>${q.q}</p>
+          <div class="answers">
+            ${q.a.map((opt, i) => `<button onclick="checkAnswer(${i})">${opt}</button>`).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function checkAnswer(selected) {
+      const q = questions[currentQuestion];
+      if (selected === q.correct) score++;
+      currentQuestion++;
       showQuestion();
     }
 
-    function showQuestion() {
+    function show
