@@ -45,6 +45,20 @@
       max-width: 300px;
       margin: 8px auto;
     }
+    a.payment-link {
+      display: inline-block;
+      padding: 12px 24px;
+      background-color: #007bff;
+      color: white;
+      border-radius: 6px;
+      font-size: 1.1em;
+      margin-top: 20px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    a.payment-link:hover {
+      background-color: #0056b3;
+    }
   </style>
 </head>
 <body>
@@ -98,10 +112,6 @@
         showQuestion();
       };
 
-      window.redirectToPayment = function() {
-        window.location.href = "https://buy.stripe.com/14AbJ2ex19NfbpP6bg5Ne00";
-      };
-
       function showQuestion() {
         if (current >= questions.length) return showResult();
         const q = questions[current];
@@ -121,15 +131,18 @@
         let iq = (80 + (score/questions.length)*80);
         iq *= age<18?1.05: age>50?0.95:1;
         iq = Math.round(iq);
-        sessionStorage.setItem("finalIQ", iq);
+        localStorage.setItem("finalIQ", iq);
         app.innerHTML = `
           <div class="container">
             <h1>All done!</h1>
             <p>You got ${score} / ${questions.length} correct.</p>
-            <button onclick="redirectToPayment()">View My IQ</button>
+            <a href="https://buy.stripe.com/14AbJ2ex19NfbpP6bg5Ne00" target="_blank" rel="noopener noreferrer" class="payment-link">
+              Proceed to Payment
+            </a>
           </div>`;
       }
     });
   </script>
 </body>
 </html>
+
