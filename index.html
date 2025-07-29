@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>IQ Test</title>
+  <style>
+    /* Your CSS here */
+  </style>
+</head>
+<body>
+<div class="container" id="app">
+  <h1>Welcome to the IQ Test</h1>
+  <p>Find out your IQ now</p>
+  <input type="date" id="dob"><br><br>
+  <button id="startBtn">Start Test</button>
+</div>
+
+<script>
+  const app = document.getElementById("app");
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const startBtn = document.getElementById("startBtn");
+
+    let currentQuestion = 0;
+    let score = 0;
+    let birthYear = 2000;
+
+    const questions = [ { q: "What comes next: 2, 4, 8, 16, ?", a: ["32", "30", "24", "20"], correct: 0 },
+      { q: "Odd one out: Apple, Banana, Carrot, Grape?", a: ["Apple", "Banana", "Carrot", "Grape"], correct: 2 },
+      { q: "15% of 200 is:", a: ["25", "30", "35", "40"], correct: 1 },
+      { q: "Rearranged: 'RTAEHEC'?", a: ["TEACHER", "REACHT", "CATHER", "CHART"], correct: 0 },
+      { q: "Which shape has 8 sides?", a: ["Octagon", "Hexagon", "Pentagon", "Nonagon"], correct: 0 },
+      { q: "Which number is the square of 13?", a: ["169", "144", "121", "196"], correct: 0 },
+      { q: "Fibonacci sequence: 1, 1, 2, 3, 5, 8, ?", a: ["11", "12", "13", "15"], correct: 2 },
+      { q: "Which word means the opposite of 'ascend'?", a: ["Rise", "Drop", "Climb", "Grow"], correct: 1 },
+      { q: "A cube has how many faces?", a: ["4", "6", "8", "10"], correct: 1 },
+      { q: "Which is not a prime number?", a: ["11", "13", "15", "17"], correct: 2 },
+      { q: "What is 111 in binary?", a: ["1101111", "1001111", "110111", "1111111"], correct: 0 },
+      { q: "Louis is Amy's mother's brother. Amy was born a year ago, and is 8 years younger than Louis, who is a baker's dozen years younger than his sister. In how many years will Louis be half the age of his only sister?", a: ["3", "6", "5", "4"], correct: 3 },
+      { q: "A, C, F, J, O, ?", a: ["Q", "S", "U", "W"], correct: 2 },
+      { q: "Jim, Bob, Ben and Tom are friends. One of them has a marble. They all make a statement. Jim says 'I don't have the marble', Bob says 'Ben has the marble', Ben says 'Tom has the marble', Tom says 'Bob is lying'. Only one of them is not lying. Who has the marble?", a: ["Jim", "Bob", "Ben", "Tom"], correct: 0 },
+      { q: "Complete the analogy: Bird is to Fly as Fish is to...?", a: ["Swim", "Dive", "Jump", "Eat"], correct: 0 },
+      { q: "a=1, b=2, c=3... z=26. Which word has the highest letter value?", a: ["genius", "think", "smart", "mind"], correct: 0 },
+      { q: "Which is a palindrome?", a: ["MADAM", "LEVEL", "RACECAR", "All of them"], correct: 3 },
+      { q: "Next in sequence: 3, 6, 11, 18, ?", a: ["27", "26", "25", "30"], correct: 0 },
+      { q: "How many ways can the letters in 'blip' be arranged?", a: ["36", "16", "24", "64"], correct: 2 },
+      { q: "All trups are bloogs. Some bloogs are gricks. Choose the most accurate statement.", a: ["Some trups are gricks", "All trups are gricks", "No gricks are trups", "It cannot be determined if any gricks are trups"], correct: 3 }];
+
+    startBtn.addEventListener("click", () => {
+      const dob = document.getElementById("dob").value;
+      if (!dob) { alert("Please enter your date of birth."); return; }
+      birthYear = new Date(dob).getFullYear();
+      showQuestion();
+    });
+
+    function showQuestion() {
+      if (currentQuestion >= questions.length) return showResult();
+      const q = questions[currentQuestion];
+      app.innerHTML = `
+        <div class="container">
+          <h2>Question ${currentQuestion + 1} of ${questions.length}</h2>
+          <p>${q.q}</p>
+          <div class="answers">
+            ${q.a.map((opt,i)=>`<button onclick="checkAnswer(${i})">${opt}</button>`).join('')}
+          </div>
+        </div>`;
+    }
+
+    window.checkAnswer = function (sel) {
+      if (sel === questions[currentQuestion].correct) score++;
+      currentQuestion++;
+      showQuestion();
+    };
+
+    window.redirectToPayment = function () {
+      window.location.href = "https://buy.stripe.com/test_XXXXXXXXXXXXXX";
+    };
+  });
+
+  function showResult() {
+    const age = new Date().getFullYear() - birthYear;
+    let iq = 80 + (score / questions.length) * 80;
+    if (age < 18) iq *= 1.05;
+    if (age > 50) iq *= 0.95;
+    iq = Math.round(iq);
+    sessionStorage.setItem("finalIQ", iq);
+
+    app.innerHTML = `
+      <div class="container">
+        <h2>Your Estimated IQ is Ready</h2>
+        <p>You answered ${score} of ${questions.length} correctly.</p>
+        <button onclick="redirectToPayment()">View My IQ</button>
+      </div>`;
+  }
+</script>
+</body>
+</html>
