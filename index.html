@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>IQ Test</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f0f2f5;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    button {
+      padding: 10px 20px;
+      margin-top: 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .answers button {
+      display: block;
+      margin: 10px auto;
+    }
+    input[type="date"] {
+      padding: 5px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container" id="app">
+  <h1>Welcome to the IQ Test</h1>
+  <p>Find out your IQ now</p>
+  <label for="dob">Enter your date of birth:</label><br><br>
+  <input type="date" id="dob"><br><br>
+  <button id="startBtn">Start Test</button>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const app = document.getElementById("app");
+    const startBtn = document.getElementById("startBtn");
+
+    const questions = [
+      { q: "What comes next: 2, 4, 8, 16, ?", a: ["32", "30", "24", "20"], correct: 0 },
+      { q: "Odd one out: Apple, Banana, Carrot, Grape?", a: ["Apple", "Banana", "Carrot", "Grape"], correct: 2 },
+      { q: "15% of 200 is:", a: ["25", "30", "35", "40"], correct: 1 },
+      { q: "Rearranged: 'RTAEHC'?", a: ["TEACHER", "REACHT", "CATHER", "CHART"], correct: 0 },
+      { q: "Which shape has 8 sides?", a: ["Octagon", "Hexagon", "Pentagon", "Nonagon"], correct: 0 },
+      { q: "Which number is the square of 13?", a: ["169", "144", "121", "196"], correct: 0 },
+      { q: "Fibonacci sequence: 1, 1, 2, 3, 5, 8, ?", a: ["11", "12", "13", "15"], correct: 2 },
+      { q: "Which word means the opposite of 'ascend'?", a: ["Rise", "Drop", "Climb", "Grow"], correct: 1 },
+      { q: "A cube has how many faces?", a: ["4", "6", "8", "10"], correct: 1 },
+      { q: "Which is not a prime number?", a: ["11", "13", "15", "17"], correct: 2 },
+      // Harder
+      { q: "What is 111 in binary?", a: ["1101111", "1001111", "110111", "1111111"], correct: 0 },
+      { q: "Train 60 miles @ 30mph, return @ 60mph. Avg speed?", a: ["40", "45", "50", "60"], correct: 1 },
+      { q: "A, C, F, J, O, ?", a: ["Q", "S", "U", "W"], correct: 2 },
+      { q: "What is 12 * 12?", a: ["144", "124", "132", "156"], correct: 0 },
+      { q: "Complete the analogy: Bird is to Fly as Fish is to...?", a: ["Swim", "Dive", "Jump", "Eat"], correct: 0 },
+      { q: "How many degrees in a triangle?", a: ["180", "90", "360", "270"], correct: 0 },
+      { q: "Which is a palindrome?", a: ["MADAM", "LEVEL", "RACECAR", "All of them"], correct: 3 },
+      { q: "Next in sequence: 3, 6, 11, 18, ?", a: ["27", "26", "25", "30"], correct: 1 },
+      { q: "Which shape has all equal sides and angles?", a: ["Circle", "Square", "Rectangle", "Rhombus"], correct: 1 },
+      { q: "What's the cube root of 27?", a: ["3", "9", "6", "4"], correct: 0 }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+    let birthYear = 2000;
+
+    startBtn.addEventListener("click", () => {
+      const dobInput = document.getElementById("dob").value;
+      if (!dobInput) {
+        alert("Please enter your date of birth.");
+        return;
+      }
+      birthYear = new Date(dobInput).getFullYear();
+      showQuestion();
+    });
+
+    function showQuestion() {
+      if (currentQuestion >= questions.length) {
+        showResult();
+        return;
+      }
+
+      const q = questions[currentQuestion];
+      app.innerHTML = `
+        <div class="container">
+          <h2>Question ${currentQuestion + 1} of ${questions.length}</h2>
+          <p>${q.q}</p>
+          <div class="answers">
+            ${q.a.map((opt, i) => `<button onclick="checkAnswer(${i})">${opt}</button>`).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    window.checkAnswer = function (selected) {
+      if (selected === questions[currentQuestion].correct) {
+        score++;
+      }
+      currentQuestion++;
+      showQuestion();
+    };
+
+    function showResult() {
+      const age = new Date().getFullYear() - birthYear;
+      let iq = 80 + (score / questions.length) * 80;
+      if (age < 18) iq *= 1.05;
+      if (age > 50) iq *= 0.95;
+      iq = Math.round(iq);
+      app.innerHTML = `
+        <div class="container">
+          <h2>Your Estimated IQ</h2>
+          <p>You answered ${score} out of ${questions.length} questions correctly.</p>
+          <p><strong>Estimated IQ: ${iq}</strong></p>
+        </div>
+      `;
+    }
+  });
+</script>
+
+</body>
+</html>
