@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your IQ Score</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      text-align: center;
+      padding-top: 100px;
+    }
+    .score-box {
+      background: white;
+      margin: auto;
+      padding: 40px;
+      max-width: 400px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #444;
+    }
+    #score {
+      font-size: 48px;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+  </style>
+</head>
+<body>
+  <div class="score-box">
+    <h1>Your Estimated IQ Score:</h1>
+    <div id="score">Loading...</div>
+  </div>
+
+  <script>
+    const iq = sessionStorage.getItem("finalIQ");
+    document.getElementById("score").textContent = iq ? iq : "Unavailable";
+  </script>
+</body>
+</html>
